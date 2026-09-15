@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RateWise — Freelance Hourly Rate Calculator</title>
+<meta name="description" content="Work out the hourly, day and project rate you need as a freelancer or consultant, based on your income goal, expenses, taxes, time off and real billable hours. Free, no signup.">
+<meta name="keywords" content="freelance rate calculator, hourly rate calculator, consultant rate calculator, how much to charge freelance, day rate calculator, contractor rate calculator">
+<link rel="canonical" href="https://gelimorto2.github.io/ratewise/">
+<meta property="og:title" content="RateWise — What Should You Charge?">
+<meta property="og:description" content="Find the freelance hourly rate that actually pays for your life. Free calculator.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://gelimorto2.github.io/ratewise/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"RateWise","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://gelimorto2.github.io/ratewise/"}</script>
+<style>
+:root{--bg:#faf8f4;--card:#fff;--ink:#1d1a16;--mute:#6b645a;--line:#e8e2d8;--acc:#c2410c;--acc2:#fff1e8}
+@media (prefers-color-scheme:dark){:root{--bg:#12100d;--card:#1b1814;--ink:#ede8e0;--mute:#a59d91;--line:#312c25;--acc:#fb923c;--acc2:#2a1a0f}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:0 16px}
+.wrap{max-width:900px;margin:0 auto;padding-block:32px 64px}
+h1{font-size:clamp(26px,5vw,40px);margin:0 0 8px;letter-spacing:-.02em;line-height:1.1}.lede{color:var(--mute);margin:0 0 26px;max-width:62ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+h2{font-size:18px;margin:0 0 10px}
+label{display:flex;justify-content:space-between;font-size:13px;color:var(--mute);margin:12px 0 4px}label output{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--acc)}
+input[type=number],select{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);font:inherit}
+.hero{background:var(--acc2);border-radius:12px;padding:18px;text-align:center;margin-bottom:12px}
+.hero span{font-size:13px;color:var(--mute)}.hero b{display:block;font-size:44px;color:var(--acc);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--bg);border-radius:10px;padding:10px 12px}.stat b{display:block;font-size:19px;font-variant-numeric:tabular-nums}.stat span{font-size:12px;color:var(--mute)}
+.note{font-size:13px;color:var(--mute);margin-top:12px}
+.addr{font-family:ui-monospace,Menlo,monospace;font-size:13px;word-break:break-all;background:var(--bg);padding:10px;border-radius:8px;border:1px dashed var(--line)}
+button{background:var(--acc);color:#fff;border:0;border-radius:9px;padding:10px 14px;font:600 14px system-ui;cursor:pointer;margin-top:10px}
+.faq h3{font-size:15px;margin:16px 0 4px}.faq p{margin:0;color:var(--mute)}
+footer{margin-top:40px;color:var(--mute);font-size:13px}
+</style>
+</head>
+<body><div class="wrap">
+<h1>What should you charge?</h1>
+<p class="lede">Most freelancers undercharge because they divide their income goal by 40 hours × 52 weeks. RateWise includes taxes, expenses, time off and the hours you can't bill, then gives you a rate that actually pays your bills.</p>
+<div class="grid">
+<section class="card">
+ <h2>Your numbers</h2>
+ <label for="cur">Currency<output></output></label>
+ <select id="cur"><option value="USD">USD $</option><option value="EUR">EUR €</option><option value="GBP">GBP £</option><option value="CAD">CAD $</option><option value="AUD">AUD $</option><option value="INR">INR ₹</option></select>
+ <label for="income">Take-home income goal / year</label><input id="income" type="number" value="80000" step="1000">
+ <label for="exp">Business expenses / month <small>(software, gear, insurance, coworking)</small></label><input id="exp" type="number" value="600" step="50">
+ <label for="tax">Tax rate <output id="taxO"></output></label><input id="tax" type="range" min="0" max="55" value="30">
+ <label for="off">Weeks off / year <small>(holiday, sick, public holidays)</small><output id="offO"></output></label><input id="off" type="range" min="0" max="16" value="7">
+ <label for="hours">Working hours / week<output id="hoursO"></output></label><input id="hours" type="range" min="10" max="60" value="40">
+ <label for="bill">Share of hours that are billable<output id="billO"></output></label><input id="bill" type="range" min="20" max="100" value="65">
+ <label for="margin">Profit / savings buffer<output id="marginO"></output></label><input id="margin" type="range" min="0" max="40" value="10">
+</section>
+<section class="card">
+ <div class="hero"><span>Minimum hourly rate</span><b id="hourly">–</b></div>
+ <div class="stats">
+  <div class="stat"><span>Day rate (8h)</span><b id="day">–</b></div>
+  <div class="stat"><span>Week rate</span><b id="week">–</b></div>
+  <div class="stat"><span>Revenue needed / yr</span><b id="rev">–</b></div>
+  <div class="stat"><span>Billable hours / yr</span><b id="bh">–</b></div>
+  <div class="stat"><span>Monthly retainer (20h)</span><b id="ret">–</b></div>
+  <div class="stat"><span>Naive rate (÷2080h)</span><b id="naive">–</b></div>
+ </div>
+ <p class="note" id="gap"></p>
+ <h2 style="margin-top:20px">Quick project quote</h2>
+ <label for="pH">Estimated hours</label><input id="pH" type="number" value="30">
+ <label for="pR">Scope-creep buffer<output id="pRO"></output></label><input id="pR" type="range" min="0" max="50" value="20">
+ <div class="hero" style="margin-top:12px"><span>Quote this project at</span><b id="quote" style="font-size:34px">–</b></div>
+</section>
+</div>
+
+<section class="card" style="margin-top:16px">
+ <h2>Did RateWise help you raise your rates?</h2>
+ <p class="lede" style="margin:0 0 10px">If it earned you even one extra hour's pay, you can send a tip in USDC or ETH on Base, Polygon, Arbitrum or Ethereum. It keeps the tool free, with no ads.</p>
+ <div class="addr" id="addr">0x588289357D83Fa602611794f894E7b6355FC8345</div>
+ <button onclick="navigator.clipboard.writeText(document.getElementById('addr').textContent);this.textContent='Copied ✓'">Copy address</button>
+</section>
+
+<section class="card faq" style="margin-top:16px">
+ <h2>FAQ</h2>
+ <h3>How do I calculate my freelance hourly rate?</h3><p>Add your income goal, taxes, business expenses and a profit buffer to get the revenue you need. Then divide by the hours you can actually bill: working weeks × weekly hours × billable share. Most freelancers bill only 50–70% of the hours they work.</p>
+ <h3>What's a good billable percentage?</h3><p>Sales, admin, invoicing, learning and emails take up a lot of time. 60–70% is realistic for established freelancers. 40–50% is common in your first year.</p>
+ <h3>Should I charge hourly or per project?</h3><p>Use your hourly rate as the floor, then quote per project with a scope buffer. Fixed prices reward you for getting faster, and clients like knowing the cost up front.</p>
+</section>
+<footer>RateWise · open source on <a href="https://github.com/gelimorto2/ratewise">GitHub</a> · Next step: bill the client with <a href="https://gelimorto2.github.io/invoicesnap/">InvoiceSnap, a free invoice generator</a> · <a href="https://gelimorto2.github.io/edgesizer/">EdgeSizer</a></footer>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const f=v=>{try{return new Intl.NumberFormat(undefined,{style:'currency',currency:$('cur').value,maximumFractionDigits:0}).format(v)}catch(e){return Math.round(v)}};
+function calc(){
+ const inc=+$('income').value,exp=+$('exp').value*12,tax=+$('tax').value/100,off=+$('off').value,hrs=+$('hours').value,bill=+$('bill').value/100,mar=+$('margin').value/100;
+ $('taxO').textContent=Math.round(tax*100)+'%';$('offO').textContent=off;$('hoursO').textContent=hrs;$('billO').textContent=Math.round(bill*100)+'%';$('marginO').textContent=Math.round(mar*100)+'%';$('pRO').textContent=$('pR').value+'%';
+ const gross=tax<1?inc/(1-tax):inc, rev=(gross+exp)*(1+mar), bh=Math.max(1,(52-off)*hrs*bill), h=rev/bh;
+ $('hourly').textContent=f(h);$('day').textContent=f(h*8);$('week').textContent=f(h*hrs*bill);$('rev').textContent=f(rev);$('bh').textContent=Math.round(bh).toLocaleString();$('ret').textContent=f(h*20);
+ const naive=inc/2080;$('naive').textContent=f(naive);
+ $('gap').textContent=`If you charged the "naive" rate, you'd end up ${f((h-naive)*bh)} a year short of your goal.`;
+ $('quote').textContent=f(h*(+$('pH').value)*(1+(+$('pR').value)/100));
+}
+document.querySelectorAll('input,select').forEach(e=>e.addEventListener('input',calc));calc();
+</script>
+</body></html>
